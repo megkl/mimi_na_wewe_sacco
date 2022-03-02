@@ -1,106 +1,180 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:mimi_na_wewe_sacco/view/feature/authentication/authentication_event.dart';
+import 'config/routes.dart';
+import 'data/repository/user/user_repository.dart';
+import 'domain/locator.dart' as service_locator;
+import 'domain/locator.dart';
+import 'view/feature/authentication/authentication_bloc.dart';
+import 'view/feature/authentication/authentication_state.dart';
 
-void main() {
-  runApp(const MyApp());
+class SimpleBlocDelegate extends BlocObserver {
+  @override
+  void onEvent(Bloc bloc, Object event) {
+    super.onEvent(bloc, event);
+  }
+
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    super.onTransition(bloc, transition);
+  }
+
+  @override
+  void onError(BlocBase bloc, Object error, StackTrace stacktrace) {
+    super.onError(bloc, error, stacktrace);
+  }
+}
+
+void main() async {
+  service_locator.init();
+
+  var delegate = await LocalizationDelegate.create(
+    fallbackLocale: 'en_KE',
+    supportedLocales: ['en_KE', 'en_US'],
+  );
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
+  //Bloc.observer = SimpleBlocDelegate();
+  runApp(
+    BlocProvider<AuthenticationBloc>(
+      create: (context) => AuthenticationBloc()..add(AppStarted()),
+      child: MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider<UserRepository>(
+            create: (context) => sl(),
+          ),
+        ],
+        child: LocalizedApp(
+          delegate,
+          MyApp(),
+        ),
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
+    var localizationDelegate = LocalizedApp.of(context).delegate;
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+    return LocalizationProvider(
+        state: LocalizationProvider.of(context).state,
+        child: MaterialApp(
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            localizationDelegate,
           ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+          routes: _registerRoutes(),
+          onGenerateRoute: _registerRoutesWithParameters,
+          supportedLocales: localizationDelegate.supportedLocales,
+          debugShowCheckedModeBanner: false,
+          locale: localizationDelegate.currentLocale,
+          title: 'Pesabank',
+          theme: ThemeData(),
+        ));
+  }
+
+  Map<String, WidgetBuilder> _registerRoutes() {
+    return <String, WidgetBuilder>{
+      //PesaBankRoutes.signupwithphone: (context) => _buildSignUpPhoneBloc(),
+      //PesaBankRoutes.signupwithemail: (context) => _buildSignUpEmailBloc(),
+      //PesaBankRoutes.signinwithemail: (context) => _buildSignInEmailBloc(),
+      //PesaBankRoutes.signinwithphone: (context) => _buildSignInPhoneBloc(),
+      //PesaBankRoutes.signUpverificationCode: (context) =>
+      //_buildSignUpVerificationCodeBloc(),
+      //PesaBankRoutes.addprofile: (context) => _buildaddProfileBloc(),
+      // PesaBankRoutes.profile: (context) => _buildProfileBloc(),
+      //   PesaBankRoutes.addcard: (context) => _buildAddCardBloc(),
+      //   PesaBankRoutes.cardList: (context) => _buildCardList(),
+      //   PesaBankRoutes.editprofile: (context) => _buildeditProfileBloc(),
+      //   PesaBankRoutes.home: (context) =>
+      //       BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      //           builder: (context, state) {
+      //         if (state is Authenticated) {
+      //           //return HomePage(); //TODO profile properties should be here
+      //         } else if (state is LogInUnauthenticated) {
+      //           //return const AccountScreen();
+      //         } else if (state is ProfileUnauthenticated) {
+      //           //return _buildaddProfileBloc();
+      //         } else if (state is CodeUnauthenticated) {
+      //           //return _buildSetPinBloc();
+      //         } else if (state is SignUpUnauthenticated) {
+      //           //return OnBoarding();
+      //         } else {
+      //           //return SplashScreen();
+      //         }
+      //       }),
+      //   // PesaBankRoutes.profile: (context) =>
+      //   //     BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      //   //         builder: (context, state) {
+      //   //       //TODO: revise authentication later. Right now no login is required.
+      //   //       if (state is Authenticated) {
+      //   //         // return HomeScreen(); //TODO profile properties should be here
+      //   //       } else if (state is Unauthenticated) {
+      //   //         return _buildSignInBloc();
+      //   //       } else {
+      //   //         return SplashScreen();
+      //   //       }
+      //   //     }),
+    };
+  }
+
+  // BlocProvider<SignInBloc> _buildSignInEmailBloc() {
+  //   return BlocProvider<SignInBloc>(
+  //     create: (context) => SignInBloc(
+  //       userRepository: RepositoryProvider.of<UserRepository>(context),
+  //       authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+  //     ),
+  //     child: SignInEmailScreen(),
+  //   );
+  // }
+
+  // BlocProvider<SignInBloc> _buildSignInPhoneBloc() {
+  //   return BlocProvider<SignInBloc>(
+  //     create: (context) => SignInBloc(
+  //       userRepository: RepositoryProvider.of<UserRepository>(context),
+  //       authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+  //     ),
+  //     child: SignInPhoneScreen(),
+  //   );
+  // }
+
+  // BlocProvider<SignUpBloc> _buildSignUpEmailBloc() {
+  //   return BlocProvider<SignUpBloc>(
+  //       create: (context) => SignUpBloc(
+  //             userRepository: RepositoryProvider.of<UserRepository>(context),
+  //             authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+  //           ),
+  //       child: SignUpEmailScreen());
+  // }
+
+  // BlocProvider<SignUpBloc> _buildSignUpPhoneBloc() {
+  //   return BlocProvider<SignUpBloc>(
+  //       create: (context) => SignUpBloc(
+  //             userRepository: RepositoryProvider.of<UserRepository>(context),
+  //             authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+  //           ),
+  //       child: SignUpPhoneScreen());
+  // }
+  Route _registerRoutesWithParameters(RouteSettings settings) {
+    if (settings.name == PesaBankRoutes.editprofile) {
+      //final ProfileEntity editProfileParameters = settings.arguments;
+      return MaterialPageRoute(builder: (context) {
+        // return EditProfileScreen(
+        //   profileEntity: editProfileParameters,
+        // );
+      });
+    }
   }
 }
