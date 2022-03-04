@@ -11,16 +11,23 @@ import '../utils.dart';
 
 class UserApiHandler extends UserRepository {
   @override
-  Future<void> signIn({
-    String? email,
-    String? phoneNumber,
-    String? signInWith,
-  }) async {
+  Future<void> signIn(
+      {String? username,
+      String? phoneNumber,
+      String? emailAddress,
+      String? password,
+      bool? isVerified,
+      bool? isAdmin,
+      String? userLocation}) async {
     var route = HttpClient().createUri(ServerAddresses.login);
-    var data = <String, String?>{
-      "user_phone_number": phoneNumber,
-      "user_email_address": email,
-      "sign_in_with": signInWith
+    var data = <String, dynamic>{
+      "username": username,
+      "password": password,
+      "email_address": emailAddress,
+      "phone_number": phoneNumber,
+      "is_admin": isAdmin,
+      "is_verified": isVerified,
+      "user_location": userLocation,
     };
 
     var response = await http.post(route, body: data);
@@ -33,16 +40,32 @@ class UserApiHandler extends UserRepository {
 
   @override
   Future<void> signUp(
-      {String? email, String? phoneNumber, String? signUpWith}) async {
+      {String? username,
+      String? phoneNumber,
+      String? emailAddress,
+      String? password,
+      String? registrationType,
+      String? socialId,
+      bool? isVerified,
+      bool? isAdmin,
+      String? location}) async {
     try {
       var route = HttpClient().createUri(ServerAddresses.register);
-      var data = <String, String?>{
-        "user_email_address": email,
-        "user_phone_number": phoneNumber,
-        "sign_up_with": signUpWith
+      var data = <String, dynamic>{
+        "username": username,
+        "password": password,
+        "email_address": emailAddress,
+        "phone_number": phoneNumber,
+        "is_admin": isAdmin,
+        "is_verified": isVerified,
+        "location": location,
+        "registration_type": registrationType,
+        "social_user_Id": socialId,
+        "date_created": DateTime.now().toString()
       };
-
-      var response = await http.post(route, body: data);
+      print(data);
+      var body = json.encode(data);
+      var response = await http.post(route, body: body);
       Map jsonResponse = json.decode(response.body);
       if (jsonResponse['status'] != 200) {
         throw jsonResponse['message'];
@@ -93,7 +116,8 @@ class UserApiHandler extends UserRepository {
       String? phoneNumber,
       String? idNumber,
       bool? isAdmin,
-      String? country}) async {
+      bool? isActive,
+      String? location}) async {
     try {
       Map<String, String> headers = {
         "Authorization": "Bearer ${Storage().storage['token']}"
@@ -103,11 +127,12 @@ class UserApiHandler extends UserRepository {
         "user_first_name": firstName,
         "user_middle_name": middleName,
         "user_last_name": lastName,
-        "user_identification_country_of_issue": country,
-        "user_is_admin": isAdmin,
-        "user_identification_number": idNumber,
-        "user_email_address": email,
-        "user_phone_number": phoneNumber
+        "location": location,
+        "is_admin": isAdmin,
+        "is_active": isActive,
+        "identification_number": idNumber,
+        "email_address": email,
+        "phone_number": phoneNumber
       };
 
       var response = await http.patch(route, body: data, headers: headers);

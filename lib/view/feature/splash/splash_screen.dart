@@ -13,21 +13,22 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     SizeConfiguration().init(context);
     return Scaffold(
-        backgroundColor: kSecondaryColor,
+        backgroundColor: kPrimaryColor,
         body: Stack(
           alignment: AlignmentDirectional.center,
           fit: StackFit.expand,
           children: [
             Image.asset(
               "assets/logo.png",
-              height: SizeConfiguration.screenHeight * 0.4,
+              height: SizeConfiguration.screenHeight * 0.5,
               width: SizeConfiguration.screenWidth,
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: getProportionalScreenHeight(220)),
-                Text("Simple  .  Easy  .  Empoering",
+                Text("Mimi na Wewe Sacco", style: subHeadingtextStyle),
+                Text("Simple  .  Easy  .  Empowering",
                     style: subHeadingtextStyle),
               ],
             ),

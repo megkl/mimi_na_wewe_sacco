@@ -4,9 +4,26 @@ import 'package:mimi_na_wewe_sacco/domain/model/user_entity.dart';
 
 abstract class UserRepository {
   /// an access token as [String]
-  Future<void> signIn({String? email, String? phoneNumber, String? signInWith});
+  Future<void> signIn({
+    String? username,
+    String? phoneNumber,
+    String? emailAddress,
+    String? password,
+    bool? isVerified,
+    bool? isAdmin,
+    String? userLocation,
+  });
 
-  Future<void> signUp({String? email, String? phoneNumber, String? signUpWith});
+  Future<void> signUp(
+      {String? username,
+      String? phoneNumber,
+      String? emailAddress,
+      String? password,
+      String? registrationType,
+      String? socialId,
+      bool? isVerified,
+      bool? isAdmin,
+      String? location});
 
   Future<Map<String, dynamic>> codeVerification({String? code});
 
@@ -24,7 +41,8 @@ abstract class UserRepository {
       String? phoneNumber,
       String? idNumber,
       bool? isAdmin,
-      String? country});
+      bool? isActive,
+      String? location});
 
   Future<void> setUserPin({String? pin});
 

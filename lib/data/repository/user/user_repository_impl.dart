@@ -10,17 +10,46 @@ class UserRepositoryImpl extends UserRepository {
   UserRepositoryImpl({this.userApiHandler});
 
   @override
-  Future<void> signIn(
-      {String? email, String? phoneNumber, String? signInWith}) async {
-    return userApiHandler!
-        .signIn(email: email, phoneNumber: phoneNumber, signInWith: signInWith);
+  Future<void> signIn({
+    String? username,
+    String? phoneNumber,
+    String? emailAddress,
+    String? password,
+    bool? isVerified,
+    bool? isAdmin,
+    String? userLocation,
+  }) async {
+    return userApiHandler!.signIn(
+        emailAddress: emailAddress,
+        phoneNumber: phoneNumber,
+        username: username,
+        password: password,
+        isAdmin: isAdmin,
+        isVerified: isVerified,
+        userLocation: userLocation);
   }
 
   @override
   Future<void> signUp(
-      {String? email, String? phoneNumber, String? signUpWith}) async {
-    return userApiHandler!
-        .signUp(email: email, phoneNumber: phoneNumber, signUpWith: signUpWith);
+      {String? username,
+      String? phoneNumber,
+      String? emailAddress,
+      String? password,
+      String? registrationType,
+      String? socialId,
+      bool? isVerified,
+      bool? isAdmin,
+      String? location}) async {
+    return userApiHandler!.signUp(
+        emailAddress: emailAddress,
+        phoneNumber: phoneNumber,
+        registrationType: registrationType,
+        location: location,
+        password: password,
+        socialId: socialId,
+        isAdmin: isAdmin,
+        isVerified: isVerified,
+        username: username);
   }
 
   @override
@@ -57,16 +86,18 @@ class UserRepositoryImpl extends UserRepository {
       String? phoneNumber,
       String? idNumber,
       bool? isAdmin,
-      String? country}) {
+      bool? isActive,
+      String? location}) {
     return userApiHandler!.updateProfile(
         firstName: firstName,
         middleName: middleName,
         lastName: lastName,
         idNumber: idNumber,
         isAdmin: isAdmin,
+        isActive: isActive,
         email: email,
         phoneNumber: phoneNumber,
-        country: country);
+        location: location);
   }
 
   @override

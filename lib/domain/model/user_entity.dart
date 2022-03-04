@@ -10,7 +10,8 @@ class UserEntity extends Entity<String> {
   String? userPhoneNumber;
   String? userSocialId;
   String? userLocation;
-  String? userAdmin;
+  bool? isAdmin;
+  bool? isVerified;
 
   UserEntity(
       {String? id,
@@ -21,7 +22,8 @@ class UserEntity extends Entity<String> {
       this.userPhoneNumber,
       this.userSocialId,
       this.userLocation,
-      this.userAdmin})
+      this.isVerified,
+      this.isAdmin})
       : super(id!);
 
   factory UserEntity.fromJson(Map<String, dynamic> json) => UserEntity(
@@ -31,9 +33,10 @@ class UserEntity extends Entity<String> {
         userPhoneNumber: json["phone_number"],
         userEmail: json["email_address"],
         userRegistrationType: json["registration_type"],
-        userSocialId: json["social_use_id"],
-        userLocation: json["user_userLocation"],
-        userAdmin: json["is_user_admin"],
+        userSocialId: json["social_user_id"],
+        userLocation: json["user_location"],
+        isAdmin: json["is_admin"],
+        isVerified: json["is_verified"],
       );
   Map<String, dynamic> toMap() {
     return {
@@ -44,7 +47,8 @@ class UserEntity extends Entity<String> {
       "user_phone_number": userPhoneNumber,
       "registration_type": userRegistrationType,
       "location": userLocation,
-      "is_user_admin": userAdmin
+      "is_admin": isAdmin,
+      "is_verified": isVerified
     };
   }
 
@@ -56,7 +60,8 @@ class UserEntity extends Entity<String> {
         userEmail.toString(),
         userPhoneNumber.toString(),
         userRegistrationType.toString(),
-        userAdmin.toString(),
+        isAdmin.toString(),
+        isVerified.toString(),
         userLocation.toString()
       ];
 }

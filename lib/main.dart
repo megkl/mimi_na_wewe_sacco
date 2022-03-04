@@ -5,12 +5,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:mimi_na_wewe_sacco/view/feature/authentication/authentication_event.dart';
+import 'package:mimi_na_wewe_sacco/view/feature/home/homepage.dart';
+import 'package:mimi_na_wewe_sacco/view/feature/profile/add_profile.dart';
+import 'package:mimi_na_wewe_sacco/view/feature/profile/profile.dart';
+import 'package:mimi_na_wewe_sacco/view/feature/sign_in/sign_In.dart';
+import 'package:mimi_na_wewe_sacco/view/feature/sign_in/sign_in_with_email.dart';
 import 'config/routes.dart';
 import 'data/repository/user/user_repository.dart';
 import 'domain/locator.dart' as service_locator;
 import 'domain/locator.dart';
 import 'view/feature/authentication/authentication_bloc.dart';
 import 'view/feature/authentication/authentication_state.dart';
+import 'view/feature/sign_up/sign_up_bloc.dart';
+import 'view/feature/sign_up/sign_up_tab.dart';
+import 'view/feature/splash/splash_screen.dart';
 
 class SimpleBlocDelegate extends BlocObserver {
   @override
@@ -80,95 +88,74 @@ class MyApp extends StatelessWidget {
           supportedLocales: localizationDelegate.supportedLocales,
           debugShowCheckedModeBanner: false,
           locale: localizationDelegate.currentLocale,
-          title: 'Pesabank',
+          title: 'Mimi na Wewe Sacco',
           theme: ThemeData(),
         ));
   }
 
   Map<String, WidgetBuilder> _registerRoutes() {
     return <String, WidgetBuilder>{
-      //PesaBankRoutes.signupwithphone: (context) => _buildSignUpPhoneBloc(),
-      //PesaBankRoutes.signupwithemail: (context) => _buildSignUpEmailBloc(),
-      //PesaBankRoutes.signinwithemail: (context) => _buildSignInEmailBloc(),
-      //PesaBankRoutes.signinwithphone: (context) => _buildSignInPhoneBloc(),
-      //PesaBankRoutes.signUpverificationCode: (context) =>
-      //_buildSignUpVerificationCodeBloc(),
-      //PesaBankRoutes.addprofile: (context) => _buildaddProfileBloc(),
-      // PesaBankRoutes.profile: (context) => _buildProfileBloc(),
-      //   PesaBankRoutes.addcard: (context) => _buildAddCardBloc(),
-      //   PesaBankRoutes.cardList: (context) => _buildCardList(),
-      //   PesaBankRoutes.editprofile: (context) => _buildeditProfileBloc(),
-      //   PesaBankRoutes.home: (context) =>
-      //       BlocBuilder<AuthenticationBloc, AuthenticationState>(
-      //           builder: (context, state) {
-      //         if (state is Authenticated) {
-      //           //return HomePage(); //TODO profile properties should be here
-      //         } else if (state is LogInUnauthenticated) {
-      //           //return const AccountScreen();
-      //         } else if (state is ProfileUnauthenticated) {
-      //           //return _buildaddProfileBloc();
-      //         } else if (state is CodeUnauthenticated) {
-      //           //return _buildSetPinBloc();
-      //         } else if (state is SignUpUnauthenticated) {
-      //           //return OnBoarding();
-      //         } else {
-      //           //return SplashScreen();
-      //         }
-      //       }),
-      //   // PesaBankRoutes.profile: (context) =>
-      //   //     BlocBuilder<AuthenticationBloc, AuthenticationState>(
-      //   //         builder: (context, state) {
-      //   //       //TODO: revise authentication later. Right now no login is required.
-      //   //       if (state is Authenticated) {
-      //   //         // return HomeScreen(); //TODO profile properties should be here
-      //   //       } else if (state is Unauthenticated) {
-      //   //         return _buildSignInBloc();
-      //   //       } else {
-      //   //         return SplashScreen();
-      //   //       }
-      //   //     }),
+      MimiNaWeweSacco.signupwithphone: (context) => _buildSignUpBloc(),
+      MimiNaWeweSacco.signupwithemail: (context) => _buildSignUpBloc(),
+      MimiNaWeweSacco.signinwithemail: (context) => _buildSignInBloc(),
+      MimiNaWeweSacco.editProduct: (context) => _buildSignUpBloc(),
+      MimiNaWeweSacco.addProfile: (context) => _buildAddProfile(),
+      MimiNaWeweSacco.profile: (context) => _buildSignUpBloc(),
+      MimiNaWeweSacco.addProduct: (context) => _buildSignUpBloc(),
+      MimiNaWeweSacco.productList: (context) => _buildSignUpBloc(),
+      MimiNaWeweSacco.editProfile: (context) => _buildSignUpBloc(),
+      MimiNaWeweSacco.home: (context) =>
+          BlocBuilder<AuthenticationBloc, AuthenticationState>(
+              builder: (context, state) {
+            if (state is Authenticated) {
+              return HomePageScreen(); //TODO profile properties should be here
+            } else if (state is LogInUnauthenticated) {
+              return _buildSignInBloc();
+            } else if (state is ProfileUnauthenticated) {
+              return _buildAddProfile();
+            } else if (state is CodeUnauthenticated) {
+              //return _buildSetPinBloc();
+            } else if (state is SignUpUnauthenticated) {
+              return _buildSignUpBloc();
+            } else {
+              return SplashScreen();
+            }
+          }),
     };
   }
 
-  // BlocProvider<SignInBloc> _buildSignInEmailBloc() {
-  //   return BlocProvider<SignInBloc>(
-  //     create: (context) => SignInBloc(
-  //       userRepository: RepositoryProvider.of<UserRepository>(context),
-  //       authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-  //     ),
-  //     child: SignInEmailScreen(),
-  //   );
-  // }
+  BlocProvider<SignInBloc> _buildSignInBloc() {
+    return BlocProvider<SignInBloc>(
+      create: (context) => SignInBloc(
+        userRepository: RepositoryProvider.of<UserRepository>(context),
+        authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+      ),
+      child: const SignInWithEmailScreen(),
+    );
+  }
 
-  // BlocProvider<SignInBloc> _buildSignInPhoneBloc() {
-  //   return BlocProvider<SignInBloc>(
-  //     create: (context) => SignInBloc(
-  //       userRepository: RepositoryProvider.of<UserRepository>(context),
-  //       authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-  //     ),
-  //     child: SignInPhoneScreen(),
-  //   );
-  // }
+  BlocProvider<SignUpBloc> _buildSignUpBloc() {
+    return BlocProvider<SignUpBloc>(
+      create: (context) => SignUpBloc(
+        userRepository: RepositoryProvider.of<UserRepository>(context),
+        authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+      ),
+      child: SignUpTab(),
+    );
+  }
 
-  // BlocProvider<SignUpBloc> _buildSignUpEmailBloc() {
-  //   return BlocProvider<SignUpBloc>(
-  //       create: (context) => SignUpBloc(
-  //             userRepository: RepositoryProvider.of<UserRepository>(context),
-  //             authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-  //           ),
-  //       child: SignUpEmailScreen());
-  // }
+  BlocProvider<ProfileBloc> _buildAddProfile() {
+    return BlocProvider<ProfileBloc>(
+      create: (context) => ProfileBloc(
+        userRepository: RepositoryProvider.of<UserRepository>(context),
+        authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+      ),
+      child: const AddProfileScreen(),
+    );
+  }
 
-  // BlocProvider<SignUpBloc> _buildSignUpPhoneBloc() {
-  //   return BlocProvider<SignUpBloc>(
-  //       create: (context) => SignUpBloc(
-  //             userRepository: RepositoryProvider.of<UserRepository>(context),
-  //             authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-  //           ),
-  //       child: SignUpPhoneScreen());
-  // }
   Route _registerRoutesWithParameters(RouteSettings settings) {
-    if (settings.name == PesaBankRoutes.editprofile) {
+    if (settings.name == MimiNaWeweSacco.editProfile) {
       //final ProfileEntity editProfileParameters = settings.arguments;
       return MaterialPageRoute(builder: (context) {
         // return EditProfileScreen(

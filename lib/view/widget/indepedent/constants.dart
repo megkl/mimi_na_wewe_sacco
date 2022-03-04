@@ -37,7 +37,7 @@ const headingWhiteTextStyle = TextStyle(
   fontSize: 30,
   fontWeight: FontWeight.bold,
 );
-var bluetextStyle = TextStyle(
+var purpletextStyle = TextStyle(
   color: kPrimaryColor,
   fontSize: getProportionalScreenHeight(16),
   fontWeight: FontWeight.bold,

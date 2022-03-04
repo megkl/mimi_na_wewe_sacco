@@ -27,10 +27,9 @@ class AuthenticationBloc
 
         final ProfileEntity? profile = await UserApiHandler().fetchProfile();
 
-        if (profile!.userFirstName == null ||
-            profile.userIdentificationNumber == null) {
+        if (profile!.firstName == null || profile.idNumber == null) {
           emit(ProfileUnauthenticated());
-        } else if (profile.userAccountInformationIsVerified == false) {
+        } else if (profile.isVerified == false) {
           emit(CodeUnauthenticated());
         } else {
           emit(Authenticated());

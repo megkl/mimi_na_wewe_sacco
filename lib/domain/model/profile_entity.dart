@@ -1,97 +1,65 @@
-import 'dart:convert';
+class ProfileEntity {
+  String? username;
+  String? firstName;
+  String? middleName;
+  String? lastName;
+  bool? isActive;
+  String? dOB;
+  String? location;
+  String? phoneNumber;
+  String? emailAddress;
+  String? idNumber;
+  String? img;
+  bool? isLocked;
+  bool? isVerified;
+  bool? isAdmin;
 
-import '../entity.dart';
+  ProfileEntity(
+      {username,
+      firstName,
+      middleName,
+      lastName,
+      isActive,
+      dOB,
+      location,
+      phoneNumber,
+      emailAddress,
+      img,
+      isLocked,
+      isVerified,
+      isAdmin});
 
-class ProfileEntity extends Entity<String> {
-  String? userFirstName;
-  String? userMiddleName;
-  String? userLastName;
-  String? userIdentificationCountryOfIssue;
-  //String? userIdentificationType;
-  String? userIdentificationNumber;
-  String? userEmailAddress;
-  String? userPhoneNumber;
-  //String? userAccountPin;
-  bool? userAccountInformationIsVerified;
-  bool? userAccountInformationIsLocked;
-  bool? userIsAdmin;
-  DateTime? userAccountInformationCreatedAt;
-  DateTime? userAccountInformationUpdatedAt;
-
-  ProfileEntity({
-    String? id,
-    this.userFirstName,
-    this.userMiddleName,
-    this.userLastName,
-    this.userIdentificationCountryOfIssue,
-    //this.userIdentificationType,
-    this.userIdentificationNumber,
-    this.userEmailAddress,
-    this.userPhoneNumber,
-    //this.userAccountPin,
-    this.userAccountInformationIsVerified,
-    this.userAccountInformationIsLocked,
-    this.userIsAdmin,
-    this.userAccountInformationCreatedAt,
-    this.userAccountInformationUpdatedAt,
-  }) : super(id!);
-
-  factory ProfileEntity.fromJson(Map<String, dynamic> json) => ProfileEntity(
-        id: json["_id"],
-        userFirstName: json["user_first_name"],
-        userMiddleName: json["user_middle_name"],
-        userLastName: json["user_last_name"],
-        userIdentificationCountryOfIssue:
-            json["user_identification_country_of_issue"],
-        //userIdentificationType: json["user_identification_type"],
-        userIdentificationNumber: json["user_identification_number"],
-        userEmailAddress: json["user_email_address"],
-        userPhoneNumber: json["user_phone_number"],
-        //userAccountPin: json["user_account_pin"],
-        userAccountInformationIsVerified:
-            json["user_account_information_is_verified"],
-        userAccountInformationIsLocked:
-            json["user_account_information_is_locked"],
-        userIsAdmin: json["user_is_admin"],
-        userAccountInformationCreatedAt:
-            DateTime.parse(json["user_account_information_created_at"]),
-        userAccountInformationUpdatedAt:
-            DateTime.parse(json["user_account_information_updated_at"]),
-      );
-  Map<String, dynamic> toMap() {
-    return {
-      "_id": id,
-      "user_first_name": userFirstName,
-      "user_middle_name": userMiddleName,
-      "user_last_name": userLastName,
-      "user_identification_country_of_issue": userIdentificationCountryOfIssue,
-      //"user_identification_type": userIdentificationType,
-      "user_identification_number": userIdentificationNumber,
-      "user_email_address": userEmailAddress,
-      "user_is_admin": userIsAdmin,
-      "user_phone_number": userPhoneNumber,
-      "user_account_information_is_verified": userAccountInformationIsVerified,
-      "user_account_information_is_locked": userAccountInformationIsLocked,
-      "user_account_information_created_at": userAccountInformationCreatedAt,
-      "user_account_information_updated_at": userAccountInformationUpdatedAt,
-    };
+  ProfileEntity.fromJson(Map<String, dynamic> json) {
+    username = json['username'];
+    firstName = json['first_name'];
+    middleName = json['middle_name'];
+    lastName = json['last_name'];
+    isActive = json['is_active'];
+    dOB = json['DOB'];
+    location = json['location'];
+    phoneNumber = json['phone_number'];
+    emailAddress = json['email_address'];
+    img = json['img'];
+    isLocked = json['is_Locked'];
+    isVerified = json['is_verified'];
+    isAdmin = json['is_admin'];
   }
 
-  @override
-  List<Object> get props => [
-        id,
-        userFirstName.toString(),
-        userMiddleName.toString(),
-        userLastName.toString(),
-        userIdentificationCountryOfIssue.toString(),
-        //userIdentificationType.toString(),
-        userIdentificationNumber.toString(),
-        userEmailAddress.toString(),
-        userIsAdmin.toString(),
-        userPhoneNumber.toString(),
-        userAccountInformationIsVerified.toString(),
-        userAccountInformationIsLocked.toString(),
-        userAccountInformationCreatedAt.toString(),
-        userAccountInformationUpdatedAt.toString(),
-      ];
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['username'] = username;
+    data['first_name'] = firstName;
+    data['middle_name'] = middleName;
+    data['last_name'] = lastName;
+    data['is_active'] = isActive;
+    data['DOB'] = dOB;
+    data['location'] = location;
+    data['phone_number'] = phoneNumber;
+    data['email_address'] = emailAddress;
+    data['img'] = img;
+    data['is_Locked'] = isLocked;
+    data['is_verified'] = isVerified;
+    data['is_admin'] = isAdmin;
+    return data;
+  }
 }
