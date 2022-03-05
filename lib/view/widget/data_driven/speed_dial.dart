@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mimi_na_wewe_sacco/config/routes.dart';
+import 'package:mimi_na_wewe_sacco/view/feature/profile/add_profile.dart';
+import 'package:mimi_na_wewe_sacco/view/feature/profile/add_user.dart';
+import 'package:mimi_na_wewe_sacco/view/feature/profile/profile.dart';
 
+import '../../../data/repository/product/product_repository.dart';
+import '../../../data/repository/user/user_repository.dart';
+import '../../feature/authentication/authentication.dart';
+import '../../feature/product/add_product.dart';
+import '../../feature/product/product_bloc.dart';
 import '../widgets.dart';
 
 class SpeedDialWidget extends StatefulWidget {
-  const SpeedDialWidget({Key? key}) : super(key: key);
-
+  SpeedDialWidget({Key? key, this.username}) : super(key: key);
+  String? username;
   @override
   _SpeedDialWidgetState createState() => _SpeedDialWidgetState();
 }
@@ -26,10 +34,19 @@ class _SpeedDialWidgetState extends State<SpeedDialWidget> {
             label: 'Add Product',
             backgroundColor: kPrimaryColor,
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                MimiNaWeweSacco.addProduct,
-                (Route<dynamic> route) => false,
-              );
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => BlocProvider<ProductBloc>(
+                            create: (context) => ProductBloc(
+                              productRepository:
+                                  RepositoryProvider.of<ProductRepository>(
+                                      context),
+                              authenticationBloc:
+                                  BlocProvider.of<AuthenticationBloc>(context),
+                            ),
+                            child: AddProductScreen(),
+                          )));
             },
           ),
           SpeedDialChild(
@@ -38,10 +55,21 @@ class _SpeedDialWidgetState extends State<SpeedDialWidget> {
             backgroundColor: kPrimaryColor,
             // labelBackgroundColor: Colors.transparent,
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                MimiNaWeweSacco.addUser,
-                (Route<dynamic> route) => false,
-              );
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => BlocProvider<ProfileBloc>(
+                            create: (context) => ProfileBloc(
+                              userRepository:
+                                  RepositoryProvider.of<UserRepository>(
+                                      context),
+                              authenticationBloc:
+                                  BlocProvider.of<AuthenticationBloc>(context),
+                            ),
+                            child: AddUserScreen(
+                              username: widget.username,
+                            ),
+                          )));
             },
           ),
         ]);

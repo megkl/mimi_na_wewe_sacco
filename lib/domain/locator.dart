@@ -2,6 +2,9 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:mimi_na_wewe_sacco/data/network/network_status.dart';
+import 'package:mimi_na_wewe_sacco/data/repository/product/product_api_handler.dart';
+import 'package:mimi_na_wewe_sacco/data/repository/product/product_repository.dart';
+import 'package:mimi_na_wewe_sacco/data/repository/product/product_repository_impl.dart';
 import 'package:mimi_na_wewe_sacco/data/repository/user/user_api_handler.dart';
 import 'package:mimi_na_wewe_sacco/data/repository/user/user_repository.dart';
 import 'package:mimi_na_wewe_sacco/data/repository/user/user_repository_impl.dart';
@@ -20,6 +23,9 @@ void init() {
 
   sl.registerLazySingleton<UserApiHandler>(
     () => UserApiHandler(),
+  );
+  sl.registerLazySingleton<ProductApiHandler>(
+    () => ProductApiHandler(),
   );
   // sl.registerLazySingleton<ProfileApiHandler>(
   //   () => ProfileApiHandler(),
@@ -40,6 +46,9 @@ void init() {
 
   sl.registerLazySingleton<UserRepository>(
     () => UserRepositoryImpl(userApiHandler: sl()),
+  );
+  sl.registerLazySingleton<ProductRepository>(
+    () => ProductRepositoryImpl(productApiHandler: sl()),
   );
 
   // sl.registerLazySingleton<ProfileRepository>(

@@ -11,7 +11,7 @@ import '../utils.dart';
 
 class UserApiHandler extends UserRepository {
   @override
-  Future<void> signIn(
+  Future<String> signIn(
       {String? username,
       String? phoneNumber,
       String? emailAddress,
@@ -20,26 +20,26 @@ class UserApiHandler extends UserRepository {
       bool? isAdmin,
       String? userLocation}) async {
     var route = HttpClient().createUri(ServerAddresses.login);
+    var headers = HttpClient().createHeader();
+
     var data = <String, dynamic>{
       "username": username,
       "password": password,
-      "email_address": emailAddress,
-      "phone_number": phoneNumber,
-      "is_admin": isAdmin,
-      "is_verified": isVerified,
-      "user_location": userLocation,
     };
-
-    var response = await http.post(route, body: data);
+    var body = json.encode(data);
+    var response = await http.post(route, body: body, headers: headers);
     Map jsonResponse = json.decode(response.body);
-    if (jsonResponse['status'] != 200) {
-      throw jsonResponse['message'];
+    if (jsonResponse['Status'] != 200) {
+      throw jsonResponse['msg'];
     }
-    // return jsonResponse['token'];
+    await Storage()
+        .secureStorage
+        .write(key: 'token', value: jsonResponse['token']);
+    return jsonResponse['token'];
   }
 
   @override
-  Future<void> signUp(
+  Future<String> signUp(
       {String? username,
       String? phoneNumber,
       String? emailAddress,
@@ -51,6 +51,7 @@ class UserApiHandler extends UserRepository {
       String? location}) async {
     try {
       var route = HttpClient().createUri(ServerAddresses.register);
+      var headers = HttpClient().createHeader();
       var data = <String, dynamic>{
         "username": username,
         "password": password,
@@ -65,12 +66,15 @@ class UserApiHandler extends UserRepository {
       };
       print(data);
       var body = json.encode(data);
-      var response = await http.post(route, body: body);
+      var response = await http.post(route, headers: headers, body: body);
       Map jsonResponse = json.decode(response.body);
-      if (jsonResponse['status'] != 200) {
-        throw jsonResponse['message'];
+      if (jsonResponse['Status'] != 200) {
+        throw jsonResponse['msg'];
       }
-      // return jsonResponse['token'];
+      await Storage()
+          .secureStorage
+          .write(key: 'token', value: jsonResponse['token']);
+      return jsonResponse['token'];
     } catch (error) {
       rethrow;
     }
@@ -112,6 +116,7 @@ class UserApiHandler extends UserRepository {
       {String? firstName,
       String? middleName,
       String? lastName,
+      String? username,
       String? email,
       String? phoneNumber,
       String? idNumber,
@@ -120,22 +125,23 @@ class UserApiHandler extends UserRepository {
       String? location}) async {
     try {
       Map<String, String> headers = {
-        "Authorization": "Bearer ${Storage().storage['token']}"
+        "Authorization": "Bearer ${Storage().token}"
       };
-      var route = HttpClient().createUri(ServerAddresses.updateProfile);
+      var route = HttpClient()
+          .createUri(ServerAddresses.updateProfile + username.toString());
       var data = <String, dynamic>{
         "user_first_name": firstName,
         "user_middle_name": middleName,
         "user_last_name": lastName,
         "location": location,
         "is_admin": isAdmin,
-        "is_active": isActive,
+        "is_active": true,
         "identification_number": idNumber,
         "email_address": email,
         "phone_number": phoneNumber
       };
-
-      var response = await http.patch(route, body: data, headers: headers);
+      var body = json.encode(data);
+      var response = await http.put(route, body: body, headers: headers);
       Map jsonResponse = json.decode(response.body);
       if (response.statusCode != 200) {
         throw jsonResponse['message'];
@@ -152,7 +158,7 @@ class UserApiHandler extends UserRepository {
       var headers = HttpClient().createHeader();
 
       var data = <String, String?>{
-        "user_Id": userId.toString(),
+        "_id": userId.toString(),
       };
       var body = jsonEncode(data);
       var route = HttpClient()
@@ -170,16 +176,17 @@ class UserApiHandler extends UserRepository {
   }
 
   @override
-  Future<ProfileEntity> fetchProfile() async {
+  Future<ProfileEntity> fetchProfile(String? username) async {
     try {
       var headers = HttpClient().createHeader();
 
-      var route = HttpClient().createUri(ServerAddresses.getProfile);
+      var route = HttpClient()
+          .createUri(ServerAddresses.getProfile + username.toString());
 
       var response = await http.get(route, headers: headers);
       Map jsonResponse = json.decode(response.body);
-      ProfileEntity profile = ProfileEntity.fromJson(jsonDecode(response.body));
-      if (jsonResponse['status'] != 200) {
+      ProfileEntity profile = ProfileEntity.fromJson(jsonResponse['data']);
+      if (jsonResponse['Status'] != 200) {
         throw jsonResponse['message'];
       }
       return profile;

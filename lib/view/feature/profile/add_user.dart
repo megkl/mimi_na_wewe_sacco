@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mimi_na_wewe_sacco/config/routes.dart';
 import 'package:mimi_na_wewe_sacco/data/validators/validator.dart';
 import 'package:mimi_na_wewe_sacco/domain/model/profile_entity.dart';
 import 'package:mimi_na_wewe_sacco/view/feature/profile/profile.dart';
 import 'package:mimi_na_wewe_sacco/view/widget/widgets.dart';
 
-class AddProfileScreen extends StatefulWidget {
-  AddProfileScreen(
-      {Key? key, this.username, this.emailAddress, this.phoneNumber})
+class AddUserScreen extends StatefulWidget {
+  AddUserScreen({Key? key, this.username, this.emailAddress, this.phoneNumber})
       : super(key: key);
   final String? username;
   final String? emailAddress;
   final String? phoneNumber;
   @override
-  _AddProfileScreenState createState() => _AddProfileScreenState();
+  _AddUserScreenState createState() => _AddUserScreenState();
 }
 
-class _AddProfileScreenState extends State<AddProfileScreen> {
+class _AddUserScreenState extends State<AddUserScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   final TextEditingController firstNameController = TextEditingController();
@@ -48,6 +48,27 @@ class _AddProfileScreenState extends State<AddProfileScreen> {
     sizeBetween = height / 20;
     return Scaffold(
       backgroundColor: kBackgroundColor,
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          'Add User',
+          style: TextStyle(color: kWhiteColor),
+        ),
+        leading: IconButton(
+          icon: const Icon(
+            FontAwesomeIcons.arrowAltCircleLeft,
+            color: kWhiteColor,
+          ),
+          onPressed: () {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              MimiNaWeweSacco.productList,
+              (Route<dynamic> route) => false,
+            );
+          },
+        ),
+        backgroundColor: kPrimaryColor,
+        elevation: 0,
+      ),
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
           // on success delete navigator stack and push to home
@@ -89,12 +110,12 @@ class _AddProfileScreenState extends State<AddProfileScreen> {
                     // ),
                     SizedBox(
                         height: SizeConfiguration.screenHeight * 0.04), // 4%
-                    Text("Create Mimi na Wewe Profile",
+                    Text("Create Mimi na Wewe User",
                         style: headingtextStyle, textAlign: TextAlign.center),
                     SizedBox(
                         height: SizeConfiguration.screenHeight * 0.02), // 4%
                     Text(
-                      "Enter your details to create profile",
+                      "Enter Details of user",
                       style: textStyle,
                       textAlign: TextAlign.center,
                     ),

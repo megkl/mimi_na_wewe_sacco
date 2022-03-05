@@ -15,12 +15,10 @@ class AppStarted extends AuthenticationEvent {
 
 class SignedUp extends AuthenticationEvent {
   String token;
-  String refreshToken;
-  String userId;
-  SignedUp(this.token, this.refreshToken, this.userId);
+  SignedUp(this.token);
 
   @override
-  List<Object> get props => [token, refreshToken, userId];
+  List<Object> get props => [token];
 }
 
 class ProfileCreated extends AuthenticationEvent {

@@ -10,11 +10,11 @@ class ServerAddresses {
   static const checkUsername = "user/checkUsername/";
   static const checkProfile = "/checkProfile";
   static const addProfile = "/user/addUser";
-  static const updateProfile = "/checkProfile";
-  static const getProfile = "user/getUser";
+  static const updateProfile = "user/updateProfile/";
+  static const getProfile = "user/getUser/";
   static const getUsers = "user/getUsers";
-  static const addProduct = "product/addProduct";
+  static const addProduct = "product/add";
   static const updateProduct = "/updateProduct";
-  static const getProductList = "/getProductList";
+  static const getProductList = "product/getProducts";
   static const deleteProduct = "/deleteProduct";
 }

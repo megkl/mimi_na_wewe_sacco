@@ -4,8 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:mimi_na_wewe_sacco/data/repository/product/product_repository.dart';
 import 'package:mimi_na_wewe_sacco/view/feature/authentication/authentication_event.dart';
 import 'package:mimi_na_wewe_sacco/view/feature/home/homepage.dart';
+import 'package:mimi_na_wewe_sacco/view/feature/product/product_list.dart';
 import 'package:mimi_na_wewe_sacco/view/feature/profile/add_profile.dart';
 import 'package:mimi_na_wewe_sacco/view/feature/profile/profile.dart';
 import 'package:mimi_na_wewe_sacco/view/feature/sign_in/sign_In.dart';
@@ -16,6 +18,8 @@ import 'domain/locator.dart' as service_locator;
 import 'domain/locator.dart';
 import 'view/feature/authentication/authentication_bloc.dart';
 import 'view/feature/authentication/authentication_state.dart';
+import 'view/feature/product/add_product.dart';
+import 'view/feature/product/product.dart';
 import 'view/feature/sign_up/sign_up_bloc.dart';
 import 'view/feature/sign_up/sign_up_tab.dart';
 import 'view/feature/splash/splash_screen.dart';
@@ -60,6 +64,9 @@ void main() async {
           RepositoryProvider<UserRepository>(
             create: (context) => sl(),
           ),
+          RepositoryProvider<ProductRepository>(
+            create: (context) => sl(),
+          ),
         ],
         child: LocalizedApp(
           delegate,
@@ -101,14 +108,14 @@ class MyApp extends StatelessWidget {
       MimiNaWeweSacco.editProduct: (context) => _buildSignUpBloc(),
       MimiNaWeweSacco.addProfile: (context) => _buildAddProfile(),
       MimiNaWeweSacco.profile: (context) => _buildSignUpBloc(),
-      MimiNaWeweSacco.addProduct: (context) => _buildSignUpBloc(),
-      MimiNaWeweSacco.productList: (context) => _buildSignUpBloc(),
+      MimiNaWeweSacco.addProduct: (context) => _buildAddProductBloc(),
+      MimiNaWeweSacco.productList: (context) => _buildProductListBloc(),
       MimiNaWeweSacco.editProfile: (context) => _buildSignUpBloc(),
       MimiNaWeweSacco.home: (context) =>
           BlocBuilder<AuthenticationBloc, AuthenticationState>(
               builder: (context, state) {
             if (state is Authenticated) {
-              return HomePageScreen(); //TODO profile properties should be here
+              return _buildSignInBloc(); //TODO profile properties should be here
             } else if (state is LogInUnauthenticated) {
               return _buildSignInBloc();
             } else if (state is ProfileUnauthenticated) {
@@ -144,13 +151,33 @@ class MyApp extends StatelessWidget {
     );
   }
 
+  BlocProvider<ProductBloc> _buildAddProductBloc() {
+    return BlocProvider<ProductBloc>(
+      create: (context) => ProductBloc(
+        productRepository: RepositoryProvider.of<ProductRepository>(context),
+        authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+      ),
+      child: AddProductScreen(),
+    );
+  }
+
+  BlocProvider<ProductBloc> _buildProductListBloc() {
+    return BlocProvider<ProductBloc>(
+      create: (context) => ProductBloc(
+        productRepository: RepositoryProvider.of<ProductRepository>(context),
+        authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+      ),
+      child: ProductListScreen(),
+    );
+  }
+
   BlocProvider<ProfileBloc> _buildAddProfile() {
     return BlocProvider<ProfileBloc>(
       create: (context) => ProfileBloc(
         userRepository: RepositoryProvider.of<UserRepository>(context),
         authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
       ),
-      child: const AddProfileScreen(),
+      child: AddProfileScreen(),
     );
   }
 

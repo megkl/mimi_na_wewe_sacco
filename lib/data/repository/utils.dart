@@ -4,7 +4,7 @@ import 'package:mimi_na_wewe_sacco/config/storage.dart';
 class HttpClient {
   Map<String, String> createHeader() {
     var header = <String, String>{
-      'authorization': 'Bearer ' + Storage().storage['token'],
+      'authorization': 'Bearer ' + Storage().token,
       "Content-Type": "application/json",
     };
     return header;

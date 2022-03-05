@@ -11,64 +11,32 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   AuthenticationBloc() : super(Uninitialized()) {
     on<AppStarted>((event, emit) async {
+      //var token = await _getToken();
       var token = await _getToken();
-      var refreshToken = await _getRefreshToken();
-      var userId = await _getUserId();
-
-      if (token != '' && refreshToken != '') {
-        var newToken = await _getNewToken(refreshToken);
-
-        token = newToken['token'];
-        Storage().storage['token'] = token;
-        await _saveToken(token);
-
-        Storage().storage['refreshToken'] = refreshToken;
-        Storage().storage['userId'] = userId;
-
-        final ProfileEntity? profile = await UserApiHandler().fetchProfile();
-
-        if (profile!.firstName == null || profile.idNumber == null) {
-          emit(ProfileUnauthenticated());
-        } else if (profile.isVerified == false) {
-          emit(CodeUnauthenticated());
-        } else {
-          emit(Authenticated());
-        }
-      } else if (token != '' && refreshToken == '') {
-        emit(LogInUnauthenticated());
+      if (token != '') {
+        Storage().token = token;
+        emit(Authenticated());
       } else {
         emit(SignUpUnauthenticated());
       }
     });
 
     on<SignedUp>((event, emit) async {
-      Storage().storage['token'] = event.token;
-      Storage().storage['refreshToken'] = event.refreshToken;
-      Storage().storage['userId'] = event.userId;
-
+      Storage().token = event.token;
       await _saveToken(event.token);
-      await _saveRefreshToken(event.refreshToken);
-      await _saverUserId(event.userId);
-
       emit(Authenticated());
     });
 
     on<LoggedIn>((event, emit) async {
-      Storage().storage['token'] = event.token;
-      Storage().storage['refreshToken'] = event.refreshToken;
-      Storage().storage['userId'] = event.userId;
-
+      Storage().token = event.token;
       await _saveToken(event.token);
-      await _saveRefreshToken(event.refreshToken);
-      await _saverUserId(event.userId);
-
       emit(Authenticated());
     });
 
     on<LoggedOut>((event, emit) async {
       await UserApiHandler().logout(
-        userId: Storage().storage['userId'],
-        refreshToken: Storage().storage['token'],
+        //userId: Storage().storage['_id'],
+        refreshToken: Storage().token,
       );
       await _deleteToken();
       emit(LogInUnauthenticated());
@@ -93,7 +61,7 @@ class AuthenticationBloc
   }
 
   Future<void> _saverUserId(String userId) async {
-    await Storage().secureStorage.write(key: 'userId', value: userId);
+    await Storage().secureStorage.write(key: '_d', value: userId);
   }
 
   /// read to keystore/keychain
@@ -107,7 +75,7 @@ class AuthenticationBloc
   }
 
   Future<String> _getUserId() async {
-    return await Storage().secureStorage.read(key: 'userId') ?? '';
+    return await Storage().secureStorage.read(key: '_id') ?? '';
   }
 
   Future<Map<String, dynamic>> _getNewToken(String? token) async {

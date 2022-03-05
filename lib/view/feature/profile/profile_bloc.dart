@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mimi_na_wewe_sacco/config/storage.dart';
 import 'package:mimi_na_wewe_sacco/data/repository/user/user_repository.dart';
 import 'package:mimi_na_wewe_sacco/domain/model/profile_entity.dart';
 import 'package:mimi_na_wewe_sacco/view/feature/authentication/authentication_bloc.dart';
@@ -20,6 +21,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         await userRepository!.updateProfile(
             email: event.email,
             phoneNumber: event.phoneNumber,
+            username: event.username,
             firstName: event.firstName,
             middleName: event.middleName,
             lastName: event.lastName,
@@ -39,6 +41,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         await userRepository!.updateProfile(
             email: event.email,
             firstName: event.firstName,
+            username: event.username,
             middleName: event.middleName,
             phoneNumber: event.phoneNumber,
             lastName: event.lastName,
@@ -55,7 +58,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ShowProfilePressed>((event, emit) async {
       emit(ProfileProcessingState());
       try {
-        final ProfileEntity? profile = await userRepository!.fetchProfile();
+        final ProfileEntity? profile =
+            await userRepository!.fetchProfile(event.username);
         emit(ProfileLoaded(profileEntity: profile));
       } catch (error) {
         emit(ProfileErrorState(error.toString()));

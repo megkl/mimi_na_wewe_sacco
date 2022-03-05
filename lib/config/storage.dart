@@ -10,10 +10,6 @@ class Storage {
   FlutterSecureStorage secureStorage = const FlutterSecureStorage();
   // String refreshToken = '';
   // String userId = '';
-  // String token = '';
-  Map<String, dynamic> storage = {
-    'token': '',
-    'refreshToken': '',
-    'userId': ''
-  };
+  String token = '';
+  //Map<String, dynamic> storage = {'token': '', 'refreshToken': '', '_id': ''};
 }

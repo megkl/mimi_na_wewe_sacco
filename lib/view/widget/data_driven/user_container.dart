@@ -44,12 +44,7 @@ class _UserContainerState extends State<UserContainer> {
                 height: getProportionalScreenHeight(60),
                 width: getProportionalScreenWidth(60),
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        "https://res.cloudinary.com/pesabank-limited/image/upload/v1644301001/debit-card_yjong0.png"),
-                  ),
-                ),
+                    shape: BoxShape.circle, color: kSecondaryColor),
               ),
               SizedBox(
                 width: getProportionalScreenWidth(13),

@@ -9,6 +9,8 @@ import '../../widget/widgets.dart';
 import 'edit_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
+  ProfileScreen({Key? key, this.username}) : super(key: key);
+  final String? username;
   @override
   State<StatefulWidget> createState() {
     return _ProfileScreenState();
@@ -26,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     profileBloc = BlocProvider.of<ProfileBloc>(context);
-    profileBloc.add(ShowProfilePressed());
+    profileBloc.add(ShowProfilePressed(username: widget.username));
   }
 
   @override
@@ -94,19 +96,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return ListView(
       children: <Widget>[
         Center(
-          child: otherDetails(
-              "", profileEntity.firstName! + ' ' + profileEntity.lastName!),
+          child: otherDetails("", profileEntity.username!),
         ),
         SizedBox(height: SizeConfiguration.screenHeight * 0.01),
         Text(
-          profileEntity.emailAddress!,
+          "sample@gmail.com",
           textAlign: TextAlign.center,
         ),
         SizedBox(height: SizeConfiguration.screenHeight * 0.02),
         EditButton(
           text: "Profile Details",
           press: () {
-            navigateToEditProfile(context, profileEntity);
+            //navigateToEditProfile(context, profileEntity);
           },
         ),
         SizedBox(height: SizeConfiguration.screenHeight * 0.02),
@@ -134,8 +135,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           icon: FontAwesomeIcons.exchangeAlt,
           text: "Products",
           press: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ProductListScreen()));
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (context) => ProductListScreen()));
           },
           endIcon: FontAwesomeIcons.arrowAltCircleRight,
         ),

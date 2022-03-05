@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mimi_na_wewe_sacco/config/routes.dart';
+import 'package:mimi_na_wewe_sacco/view/feature/home/homepage.dart';
 import 'package:mimi_na_wewe_sacco/view/feature/sign_in/sign_In.dart';
 import 'package:mimi_na_wewe_sacco/view/feature/sign_up/sign_up_tab.dart';
 import 'package:mimi_na_wewe_sacco/view/widget/widgets.dart';
@@ -30,10 +31,12 @@ class _SignInWithEmailScreenState extends State<SignInWithEmailScreen> {
         body: BlocConsumer<SignInBloc, SignInState>(listener: (context, state) {
           // on success delete navigator stack and push to home
           if (state is SignInFinishedState) {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              MimiNaWeweSacco.home,
-              (Route<dynamic> route) => false,
-            );
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => HomePageScreen(
+                          username: usernameController.text,
+                        )));
           }
           // on failure show a snackbar
           if (state is SignInErrorState) {
@@ -89,176 +92,179 @@ class _SignInWithEmailScreenState extends State<SignInWithEmailScreen> {
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: getProportionalScreenHeight(30),
-                        ),
-                        Text(
-                          "Hello",
-                          style: TextStyle(
-                              fontSize: getProportionalScreenWidth(28),
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: getProportionalScreenHeight(10),
-                        ),
-                        Text(
-                          "Please Sign Up for a Mimi na wewe Account",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: getProportionalScreenHeight(15),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: getProportionalScreenHeight(30),
                           ),
-                        ),
-                        SizedBox(
-                          height: getProportionalScreenHeight(30),
-                        ),
-                        Container(
-                          width: getProportionalScreenWidth(260),
-                          height: getProportionalScreenHeight(60),
-                          child: TextField(
-                            controller: usernameController,
-                            decoration: const InputDecoration(
-                                suffix: Icon(
-                                  Icons.person,
-                                  color: Colors.purple,
-                                ),
-                                labelText: "UserName",
-                                border: OutlineInputBorder(
+                          Text(
+                            "Hello",
+                            style: TextStyle(
+                                fontSize: getProportionalScreenWidth(28),
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: getProportionalScreenHeight(10),
+                          ),
+                          Text(
+                            "Please Sign Up for a Mimi na wewe Account",
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: getProportionalScreenHeight(15),
+                            ),
+                          ),
+                          SizedBox(
+                            height: getProportionalScreenHeight(30),
+                          ),
+                          Container(
+                            width: getProportionalScreenWidth(260),
+                            height: getProportionalScreenHeight(60),
+                            child: TextField(
+                              controller: usernameController,
+                              decoration: const InputDecoration(
+                                  suffix: Icon(
+                                    Icons.person,
+                                    color: Colors.purple,
+                                  ),
+                                  labelText: "UserName",
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8)),
+                                  )),
+                            ),
+                          ),
+                          SizedBox(
+                            height: getProportionalScreenHeight(12),
+                          ),
+                          SizedBox(
+                            width: getProportionalScreenWidth(260),
+                            height: getProportionalScreenHeight(60),
+                            child: TextField(
+                              controller: passwordController,
+                              obscureText: true,
+                              decoration: const InputDecoration(
+                                  suffix: Icon(
+                                    FontAwesomeIcons.eyeSlash,
+                                    color: Colors.purple,
+                                  ),
+                                  labelText: "Password",
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8)),
+                                  )),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(
+                                getProportionalScreenWidth(20),
+                                0,
+                                getProportionalScreenWidth(30),
+                                0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                  onPressed: () {},
+                                  child: const Text(
+                                    "Forgot Password",
+                                    style: TextStyle(color: Colors.purple),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => _validateAndSend(),
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: getProportionalScreenWidth(250),
+                              decoration: const BoxDecoration(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                )),
-                          ),
-                        ),
-                        SizedBox(
-                          height: getProportionalScreenHeight(12),
-                        ),
-                        SizedBox(
-                          width: getProportionalScreenWidth(260),
-                          height: getProportionalScreenHeight(60),
-                          child: TextField(
-                            controller: passwordController,
-                            obscureText: true,
-                            decoration: const InputDecoration(
-                                suffix: Icon(
-                                  FontAwesomeIcons.eyeSlash,
-                                  color: Colors.purple,
+                                      BorderRadius.all(Radius.circular(50)),
+                                  gradient: LinearGradient(
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                      colors: [
+                                        Color(0xFF8A2387),
+                                        Color(0xFFE94057),
+                                        Color(0xFFF27121),
+                                      ])),
+                              child: Padding(
+                                padding: EdgeInsets.all(
+                                    getProportionalScreenHeight(12)),
+                                child: Text(
+                                  'Login',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: getProportionalScreenWidth(20),
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                labelText: "Password",
-                                border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                )),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(
-                              getProportionalScreenWidth(20),
-                              0,
-                              getProportionalScreenWidth(30),
-                              0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              TextButton(
-                                onPressed: () {},
-                                child: const Text(
-                                  "Forgot Password",
-                                  style: TextStyle(color: Colors.purple),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () => _validateAndSend(),
-                          child: Container(
-                            alignment: Alignment.center,
-                            width: getProportionalScreenWidth(250),
-                            decoration: const BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                      Color(0xFF8A2387),
-                                      Color(0xFFE94057),
-                                      Color(0xFFF27121),
-                                    ])),
-                            child: Padding(
-                              padding: EdgeInsets.all(
-                                  getProportionalScreenHeight(12)),
-                              child: Text(
-                                'Login',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: getProportionalScreenWidth(20),
-                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: getProportionalScreenHeight(17),
-                        ),
-                        const Text(
-                          "Or Login using Social Media Account",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: getProportionalScreenHeight(10),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            IconButton(
-                                onPressed: () {},
-                                icon: const Icon(FontAwesomeIcons.facebook,
-                                    color: Colors.blue)),
-                            IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  FontAwesomeIcons.google,
-                                  color: Colors.redAccent,
-                                )),
-                            // IconButton(
-                            //     onPressed: (){},
-                            //     icon: const Icon(
-                            //       FontAwesomeIcons.twitter,
-                            //       color: Colors.blueAccent,
-                            //     )),
-                            IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  FontAwesomeIcons.linkedinIn,
-                                  color: Colors.blueAccent,
-                                ))
-                          ],
-                        ),
-                        SizedBox(
-                          height: getProportionalScreenHeight(15),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            _showSignUpWithEmail();
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          SizedBox(
+                            height: getProportionalScreenHeight(17),
+                          ),
+                          const Text(
+                            "Or Login using Social Media Account",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: getProportionalScreenHeight(10),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(
-                                "Do not have an account?  ",
-                                style: textStyle,
-                              ),
-                              Text(
-                                'Sign Up',
-                                style: purpletextStyle,
-                              ),
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(FontAwesomeIcons.facebook,
+                                      color: Colors.blue)),
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    FontAwesomeIcons.google,
+                                    color: Colors.redAccent,
+                                  )),
+                              // IconButton(
+                              //     onPressed: (){},
+                              //     icon: const Icon(
+                              //       FontAwesomeIcons.twitter,
+                              //       color: Colors.blueAccent,
+                              //     )),
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    FontAwesomeIcons.linkedinIn,
+                                    color: Colors.blueAccent,
+                                  ))
                             ],
                           ),
-                        ),
-                      ],
+                          SizedBox(
+                            height: getProportionalScreenHeight(15),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              _showSignUpWithEmail();
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Do not have an account?  ",
+                                  style: textStyle,
+                                ),
+                                Text(
+                                  'Sign Up',
+                                  style: purpletextStyle,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 ],
@@ -285,12 +291,7 @@ class _SignInWithEmailScreenState extends State<SignInWithEmailScreen> {
   _validateAndSend() {
     if (_formKey.currentState!.validate()) {
       return BlocProvider.of<SignInBloc>(context).add(SignInPressed(
-          emailAddress: "",
-          phoneNumber: "",
-          userLocation: "position",
           password: passwordController.text,
-          isAdmin: false,
-          isVerified: false,
           username: usernameController.text));
     }
   }

@@ -6,12 +6,14 @@ import 'package:lottie/lottie.dart';
 import 'package:mimi_na_wewe_sacco/config/routes.dart';
 import 'package:mimi_na_wewe_sacco/data/repository/user/user_repository.dart';
 import 'package:mimi_na_wewe_sacco/data/validators/validator.dart';
+import 'package:mimi_na_wewe_sacco/view/feature/profile/add_profile.dart';
 import 'package:mimi_na_wewe_sacco/view/feature/sign_in/sign_In.dart';
 import 'package:mimi_na_wewe_sacco/view/feature/sign_in/sign_in_with_email.dart';
 import 'package:mimi_na_wewe_sacco/view/feature/sign_up/sign_up.dart';
 import 'package:mimi_na_wewe_sacco/view/widget/widgets.dart';
 
 import '../authentication/authentication_bloc.dart';
+import '../profile/profile.dart';
 
 class SignUpWithEmailScreen extends StatefulWidget {
   const SignUpWithEmailScreen({Key? key}) : super(key: key);
@@ -45,10 +47,20 @@ class _SignUpWithEmailScreenState extends State<SignUpWithEmailScreen> {
           //     desiredAccuracy: LocationAccuracy.high);
 
           if (state is SignUpFinishedState) {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              MimiNaWeweSacco.addProfile,
-              (Route<dynamic> route) => false,
-            );
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => BlocProvider<ProfileBloc>(
+                        create: (context) => ProfileBloc(
+                              userRepository:
+                                  RepositoryProvider.of<UserRepository>(
+                                      context),
+                              authenticationBloc:
+                                  BlocProvider.of<AuthenticationBloc>(context),
+                            ),
+                        child: AddProfileScreen(
+                          username: usernameController.text,
+                        ))));
           }
           // on failure show a snackbar
           if (state is SignUpErrorState) {

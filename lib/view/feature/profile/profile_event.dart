@@ -9,6 +9,7 @@ class ProfilePressed extends ProfileEvent {
   final String? email;
   final String? firstName;
   final String? middleName;
+  final String? username;
   final String? lastName;
   final String? idNumber;
   final bool? isAdmin;
@@ -19,6 +20,7 @@ class ProfilePressed extends ProfileEvent {
   ProfilePressed(
       {this.email,
       this.firstName,
+      this.username,
       this.phoneNumber,
       this.middleName,
       this.country,
@@ -32,6 +34,7 @@ class ProfilePressed extends ProfileEvent {
         email.toString(),
         firstName.toString(),
         phoneNumber.toString(),
+        username.toString(),
         middleName.toString(),
         lastName.toString(),
         idNumber.toString(),
@@ -44,6 +47,7 @@ class ProfilePressed extends ProfileEvent {
 class EditProfilePressed extends ProfileEvent {
   final String? email;
   final String? firstName;
+  final String? username;
   final String? phoneNumber;
   final String? middleName;
   final String? lastName;
@@ -57,6 +61,7 @@ class EditProfilePressed extends ProfileEvent {
       this.phoneNumber,
       this.firstName,
       this.middleName,
+      this.username,
       this.country,
       this.idNumber,
       this.isAdmin,
@@ -69,6 +74,7 @@ class EditProfilePressed extends ProfileEvent {
         firstName.toString(),
         middleName.toString(),
         lastName.toString(),
+        username.toString(),
         idNumber.toString(),
         isAdmin.toString(),
         country.toString(),
@@ -77,7 +83,8 @@ class EditProfilePressed extends ProfileEvent {
 }
 
 class ShowProfilePressed extends ProfileEvent {
-  ShowProfilePressed();
+  final String? username;
+  ShowProfilePressed({this.username});
 
   @override
   List<Object> get props => [];

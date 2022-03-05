@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mimi_na_wewe_sacco/data/repository/product/product_repository.dart';
 import 'package:mimi_na_wewe_sacco/data/repository/user/user_repository.dart';
 import 'package:mimi_na_wewe_sacco/view/feature/authentication/authentication.dart';
+import 'package:mimi_na_wewe_sacco/view/feature/product/product_bloc.dart';
 import 'package:mimi_na_wewe_sacco/view/feature/profile/profile.dart';
 import 'package:mimi_na_wewe_sacco/view/widget/widgets.dart';
 
@@ -10,58 +12,62 @@ import '../profile/profile_screen.dart';
 import 'home_screen.dart';
 
 class HomePageScreen extends StatefulWidget {
-  const HomePageScreen({Key? key}) : super(key: key);
-
+  HomePageScreen({Key? key, this.username}) : super(key: key);
+  String? username;
   @override
   _HomePageScreenState createState() => _HomePageScreenState();
 }
 
 class _HomePageScreenState extends State<HomePageScreen> {
-  List<Widget> widgets = [
-    MultiBlocProvider(
-      providers: [
-        BlocProvider<ProfileBloc>(
-          create: (BuildContext context) => ProfileBloc(
-            userRepository: RepositoryProvider.of<UserRepository>(context),
-            authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-          ),
-        ),
-        BlocProvider<ProfileBloc>(
-          create: (BuildContext context) => ProfileBloc(
-            userRepository: RepositoryProvider.of<UserRepository>(context),
-            authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-          ),
-        ),
-        // BlocProvider<ProductBloc>(
-        //   create: (BuildContext context) => ProductBloc(
-        //     ProductRepository: RepositoryProvider.of<ProductRepository>(context),
-        //     authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-        //   ),
-        // ),
-      ],
-      child: const HomeScreen(),
-    ),
-    //const TransactionsScreen(),
-    //const Accounts(),
-    // BlocProvider<BankAccountBloc>(
-    //     create: (context) => BankAccountBloc(
-    //           bankAccountRepository:
-    //               RepositoryProvider.of<BankAccountRepository>(context),
-    //           authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-    //         ),
-    //     child: BankAccountListScreen()),
-    BlocProvider<ProfileBloc>(
-        create: (context) => ProfileBloc(
-              userRepository: RepositoryProvider.of<UserRepository>(context),
-              authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-            ),
-        child: ProfileScreen())
-  ];
+  String? _username;
   int _currentIndex = 0;
   final _inactiveColor = Colors.grey;
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> widgets = [
+      MultiBlocProvider(
+        providers: [
+          BlocProvider<ProductBloc>(
+            create: (BuildContext context) => ProductBloc(
+              productRepository:
+                  RepositoryProvider.of<ProductRepository>(context),
+              authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+            ),
+          ),
+          BlocProvider<ProfileBloc>(
+            create: (BuildContext context) => ProfileBloc(
+              userRepository: RepositoryProvider.of<UserRepository>(context),
+              authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+            ),
+          ),
+          // BlocProvider<ProductBloc>(
+          //   create: (BuildContext context) => ProductBloc(
+          //     ProductRepository: RepositoryProvider.of<ProductRepository>(context),
+          //     authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+          //   ),
+          // ),
+        ],
+        child: HomeScreen(username: widget.username),
+      ),
+      //const TransactionsScreen(),
+      //const Accounts(),
+      // BlocProvider<BankAccountBloc>(
+      //     create: (context) => BankAccountBloc(
+      //           bankAccountRepository:
+      //               RepositoryProvider.of<BankAccountRepository>(context),
+      //           authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+      //         ),
+      //     child: BankAccountListScreen()),
+      BlocProvider<ProfileBloc>(
+          create: (context) => ProfileBloc(
+                userRepository: RepositoryProvider.of<UserRepository>(context),
+                authenticationBloc:
+                    BlocProvider.of<AuthenticationBloc>(context),
+              ),
+          child: ProfileScreen(username: widget.username))
+    ];
+
     return Scaffold(
         body: widgets[_currentIndex], bottomNavigationBar: _buildBottomBar());
   }

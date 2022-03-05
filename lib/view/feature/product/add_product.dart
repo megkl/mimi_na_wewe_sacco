@@ -5,10 +5,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:mimi_na_wewe_sacco/config/routes.dart';
 import '../../../data/validators/validator.dart';
-import '../../../domain/model/profile_entity.dart';
+import '../../../domain/model/product_entity.dart';
 import '../../widget/widgets.dart';
-import '../profile/profile.dart';
-import '../profile/profile_bloc.dart';
+import '../product/product.dart';
+import '../product/product_bloc.dart';
 import 'product_bloc.dart';
 import 'product_event.dart';
 import 'product_state.dart';
@@ -35,8 +35,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   String productTypeSelectedValue = 'Long term';
   String? productBrandSelectedType;
-  late ProfileBloc profileBloc;
-  ProfileEntity? profileEntity;
+  late ProductBloc productBloc;
+  ProductEntity? productEntity;
 
   List<String>? productTypes = [
     "Car Mortgage",
@@ -49,8 +49,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
   void initState() {
     super.initState();
 
-    profileBloc = BlocProvider.of<ProfileBloc>(context);
-    profileBloc.add(ShowProfilePressed());
+    productBloc = BlocProvider.of<ProductBloc>(context);
+    productBloc.add(ShowProductPressed());
   }
 
   late double sizeBetween;
@@ -74,12 +74,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
           ),
           onPressed: () {
             Navigator.of(context).pushNamedAndRemoveUntil(
-              MimiNaWeweSacco.home,
+              MimiNaWeweSacco.productList,
               (Route<dynamic> route) => false,
             );
           },
         ),
-        backgroundColor: kSecondaryColor,
+        backgroundColor: kPrimaryColor,
         elevation: 0,
       ),
       body: BlocConsumer<ProductBloc, ProductState>(
@@ -155,11 +155,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               OverallButton(
                                   text: 'Add Product',
                                   press: () {
-                                    BlocBuilder<ProfileBloc, ProfileState>(
+                                    BlocBuilder<ProductBloc, ProductState>(
                                         builder: (context, state) {
-                                      if (state is ProfileLoaded) {
-                                        profileEntity = state.profileEntity;
-                                        _validateAndSend(profileEntity!);
+                                      if (state is ProductLoaded) {
+                                        productEntity = state.product;
+                                        _validateAndSend(productEntity!);
                                       }
                                       return buildLoading();
                                     });
@@ -320,12 +320,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
     );
   }
 
-  void _validateAndSend(ProfileEntity profileEntity) {
+  void _validateAndSend(ProductEntity productEntity) {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       Navigator.of(context).pushNamed(MimiNaWeweSacco.productList);
       return BlocProvider.of<ProductBloc>(context).add(ProductPressed(
-          addedBy: profileEntity.username,
+          addedBy: productEntity.addedBy,
           title: productNameController.text,
           body: productDescController.text,
           productTypeName: productTypeSelectedValue,

@@ -4,7 +4,7 @@ import 'package:mimi_na_wewe_sacco/domain/model/user_entity.dart';
 
 abstract class UserRepository {
   /// an access token as [String]
-  Future<void> signIn({
+  Future<String> signIn({
     String? username,
     String? phoneNumber,
     String? emailAddress,
@@ -14,7 +14,7 @@ abstract class UserRepository {
     String? userLocation,
   });
 
-  Future<void> signUp(
+  Future<String> signUp(
       {String? username,
       String? phoneNumber,
       String? emailAddress,
@@ -36,6 +36,7 @@ abstract class UserRepository {
   Future<void> updateProfile(
       {String? firstName,
       String? middleName,
+      String? username,
       String? lastName,
       String? email,
       String? phoneNumber,
@@ -51,5 +52,5 @@ abstract class UserRepository {
   // /// Get the user information and return it as [AppUser]
   Future<UserEntity> getUser();
 
-  Future<ProfileEntity> fetchProfile();
+  Future<ProfileEntity> fetchProfile(String? username);
 }

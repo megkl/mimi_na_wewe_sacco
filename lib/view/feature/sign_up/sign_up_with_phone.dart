@@ -90,195 +90,198 @@ class _SignUpWithPhoneScreenState extends State<SignUpWithPhoneScreen> {
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: getProportionalScreenHeight(30),
-                        ),
-                        const Text(
-                          "Hello",
-                          style: TextStyle(
-                              fontSize: 28, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Please Sign Up for a Mimi na wewe Account",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: getProportionalScreenHeight(15),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: getProportionalScreenHeight(30),
                           ),
-                        ),
-                        SizedBox(
-                          height: getProportionalScreenHeight(30),
-                        ),
-                        Container(
-                          width: getProportionalScreenWidth(260),
-                          height: getProportionalScreenHeight(60),
-                          child: TextField(
-                            controller: usernameController,
-                            decoration: InputDecoration(
-                                suffix: Icon(
-                                  Icons.person,
-                                  color: Colors.purple,
-                                ),
-                                labelText: "UserName",
-                                border: OutlineInputBorder(
+                          const Text(
+                            "Hello",
+                            style: TextStyle(
+                                fontSize: 28, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "Please Sign Up for a Mimi na wewe Account",
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: getProportionalScreenHeight(15),
+                            ),
+                          ),
+                          SizedBox(
+                            height: getProportionalScreenHeight(30),
+                          ),
+                          Container(
+                            width: getProportionalScreenWidth(260),
+                            height: getProportionalScreenHeight(60),
+                            child: TextField(
+                              controller: usernameController,
+                              decoration: InputDecoration(
+                                  suffix: Icon(
+                                    Icons.person,
+                                    color: Colors.purple,
+                                  ),
+                                  labelText: "UserName",
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8)),
+                                  )),
+                            ),
+                          ),
+                          SizedBox(
+                            height: getProportionalScreenHeight(12),
+                          ),
+                          SizedBox(
+                            width: getProportionalScreenWidth(260),
+                            height: getProportionalScreenHeight(60),
+                            child: TextField(
+                              controller: phoneNumberController,
+                              decoration: const InputDecoration(
+                                  suffix: Icon(
+                                    FontAwesomeIcons.mobileAlt,
+                                    color: Colors.purple,
+                                  ),
+                                  labelText: "Phone Number",
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8)),
+                                  )),
+                            ),
+                          ),
+                          SizedBox(
+                            height: getProportionalScreenHeight(12),
+                          ),
+                          SizedBox(
+                            width: getProportionalScreenWidth(260),
+                            height: getProportionalScreenHeight(60),
+                            child: TextField(
+                              controller: passwordController,
+                              obscureText: true,
+                              decoration: const InputDecoration(
+                                  suffix: Icon(
+                                    FontAwesomeIcons.eyeSlash,
+                                    color: Colors.purple,
+                                  ),
+                                  labelText: "Password",
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8)),
+                                  )),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(
+                                getProportionalScreenWidth(20),
+                                0,
+                                getProportionalScreenWidth(30),
+                                0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                  onPressed: () {},
+                                  child: const Text(
+                                    "Forgot Password",
+                                    style: TextStyle(color: Colors.purple),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => _validateAndSend(),
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: getProportionalScreenWidth(250),
+                              decoration: const BoxDecoration(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                )),
-                          ),
-                        ),
-                        SizedBox(
-                          height: getProportionalScreenHeight(12),
-                        ),
-                        SizedBox(
-                          width: getProportionalScreenWidth(260),
-                          height: getProportionalScreenHeight(60),
-                          child: TextField(
-                            controller: phoneNumberController,
-                            decoration: const InputDecoration(
-                                suffix: Icon(
-                                  FontAwesomeIcons.mobileAlt,
-                                  color: Colors.purple,
+                                      BorderRadius.all(Radius.circular(50)),
+                                  gradient: LinearGradient(
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                      colors: [
+                                        Color(0xFF8A2387),
+                                        Color(0xFFE94057),
+                                        Color(0xFFF27121),
+                                      ])),
+                              child: Padding(
+                                padding: EdgeInsets.all(
+                                    getProportionalScreenHeight(12)),
+                                child: Text(
+                                  'Sign Up',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: getProportionalScreenWidth(20),
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                labelText: "Phone Number",
-                                border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                )),
-                          ),
-                        ),
-                        SizedBox(
-                          height: getProportionalScreenHeight(12),
-                        ),
-                        SizedBox(
-                          width: getProportionalScreenWidth(260),
-                          height: getProportionalScreenHeight(60),
-                          child: TextField(
-                            controller: passwordController,
-                            obscureText: true,
-                            decoration: const InputDecoration(
-                                suffix: Icon(
-                                  FontAwesomeIcons.eyeSlash,
-                                  color: Colors.purple,
-                                ),
-                                labelText: "Password",
-                                border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                )),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(
-                              getProportionalScreenWidth(20),
-                              0,
-                              getProportionalScreenWidth(30),
-                              0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              TextButton(
-                                onPressed: () {},
-                                child: const Text(
-                                  "Forgot Password",
-                                  style: TextStyle(color: Colors.purple),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () => _validateAndSend(),
-                          child: Container(
-                            alignment: Alignment.center,
-                            width: getProportionalScreenWidth(250),
-                            decoration: const BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                      Color(0xFF8A2387),
-                                      Color(0xFFE94057),
-                                      Color(0xFFF27121),
-                                    ])),
-                            child: Padding(
-                              padding: EdgeInsets.all(
-                                  getProportionalScreenHeight(12)),
-                              child: Text(
-                                'Sign Up',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: getProportionalScreenWidth(20),
-                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: getProportionalScreenHeight(17),
-                        ),
-                        const Text(
-                          "Or Login using Social Media Account",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: getProportionalScreenHeight(10),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            IconButton(
-                                onPressed: () {},
-                                icon: const Icon(FontAwesomeIcons.facebook,
-                                    color: Colors.blue)),
-                            IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  FontAwesomeIcons.google,
-                                  color: Colors.redAccent,
-                                )),
-                            // IconButton(
-                            //     onPressed: (){},
-                            //     icon: const Icon(
-                            //       FontAwesomeIcons.twitter,
-                            //       color: Colors.blueAccent,
-                            //     )),
-                            IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  FontAwesomeIcons.linkedinIn,
-                                  color: Colors.blueAccent,
-                                ))
-                          ],
-                        ),
-                        SizedBox(
-                          height: getProportionalScreenHeight(15),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            _showSignInWithPhone();
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          SizedBox(
+                            height: getProportionalScreenHeight(17),
+                          ),
+                          const Text(
+                            "Or Login using Social Media Account",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: getProportionalScreenHeight(10),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(
-                                "Already have an account?  ",
-                                style: textStyle,
-                              ),
-                              Text(
-                                'Sign In',
-                                style: purpletextStyle,
-                              ),
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(FontAwesomeIcons.facebook,
+                                      color: Colors.blue)),
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    FontAwesomeIcons.google,
+                                    color: Colors.redAccent,
+                                  )),
+                              // IconButton(
+                              //     onPressed: (){},
+                              //     icon: const Icon(
+                              //       FontAwesomeIcons.twitter,
+                              //       color: Colors.blueAccent,
+                              //     )),
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    FontAwesomeIcons.linkedinIn,
+                                    color: Colors.blueAccent,
+                                  ))
                             ],
                           ),
-                        ),
-                      ],
+                          SizedBox(
+                            height: getProportionalScreenHeight(15),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              _showSignInWithPhone();
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Already have an account?  ",
+                                  style: textStyle,
+                                ),
+                                Text(
+                                  'Sign In',
+                                  style: purpletextStyle,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 ],

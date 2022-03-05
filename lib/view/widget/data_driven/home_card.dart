@@ -28,8 +28,8 @@ class _HomeCardState extends State<HomeCard> {
       margin: EdgeInsets.symmetric(
           horizontal: getProportionalScreenWidth(4),
           vertical: getProportionalScreenHeight(10)),
-      width: getProportionalScreenWidth(150),
-      height: getProportionalScreenHeight(100),
+      width: getProportionalScreenWidth(200),
+      height: getProportionalScreenHeight(500),
       decoration: BoxDecoration(
           boxShadow: const [
             BoxShadow(
@@ -81,33 +81,33 @@ List<HomeModel> menu = HomeData.map((Map<dynamic, dynamic> item) =>
 
 var HomeData = [
   {
-    "name": "Send Money",
-    "selectedIcon": Icons.send,
+    "name": "Products",
+    "selectedIcon": Icons.book,
     "unselectedIcon": "assets/svg/money_transfer_blue.svg"
   },
   {
-    "name": "Load Cash",
+    "name": "Loans",
     "selectedIcon": FontAwesomeIcons.moneyBillWaveAlt,
     "unselectedIcon": "assets/svg/bank_withdraw_blue.svg"
   },
   {
-    "name": "Buy Airtime",
-    "selectedIcon": FontAwesomeIcons.moneyCheckAlt,
+    "name": "My Profile",
+    "selectedIcon": Icons.person,
     "unselectedIcon": "assets/svg/insight_tracking_blue.svg"
   },
   {
-    "name": "Pay Goods & Services",
-    "selectedIcon": FontAwesomeIcons.mailBulk,
+    "name": "My Dreams",
+    "selectedIcon": FontAwesomeIcons.lightbulb,
     "unselectedIcon": "assets/svg/money_transfer_blue.svg"
   },
   {
-    "name": "Xpress",
-    "selectedIcon": FontAwesomeIcons.lightbulb,
+    "name": "Info",
+    "selectedIcon": Icons.inbox,
     "unselectedIcon": "assets/svg/bank_withdraw_blue.svg"
   },
   {
-    "name": "Check Balance",
-    "selectedIcon": FontAwesomeIcons.cashRegister,
+    "name": "Messages",
+    "selectedIcon": Icons.message_sharp,
     "unselectedIcon": "assets/svg/insight_tracking_blue.svg"
   },
 ];

@@ -10,7 +10,7 @@ class UserRepositoryImpl extends UserRepository {
   UserRepositoryImpl({this.userApiHandler});
 
   @override
-  Future<void> signIn({
+  Future<String> signIn({
     String? username,
     String? phoneNumber,
     String? emailAddress,
@@ -30,7 +30,7 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<void> signUp(
+  Future<String> signUp(
       {String? username,
       String? phoneNumber,
       String? emailAddress,
@@ -81,6 +81,7 @@ class UserRepositoryImpl extends UserRepository {
   Future<void> updateProfile(
       {String? firstName,
       String? middleName,
+      String? username,
       String? lastName,
       String? email,
       String? phoneNumber,
@@ -91,6 +92,7 @@ class UserRepositoryImpl extends UserRepository {
     return userApiHandler!.updateProfile(
         firstName: firstName,
         middleName: middleName,
+        username: username,
         lastName: lastName,
         idNumber: idNumber,
         isAdmin: isAdmin,
@@ -117,8 +119,8 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<ProfileEntity> fetchProfile() {
-    return userApiHandler!.fetchProfile();
+  Future<ProfileEntity> fetchProfile(String? username) {
+    return userApiHandler!.fetchProfile(username);
   }
 
   @override
